@@ -1,8 +1,28 @@
-# React + Vite
+### Tanstack Query 복습
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+#### 등장 배경
+- 기존 useEffect와 useState를 사용한 비동기 데이터 처리 방식은 상태 관리가 복잡하고 코드 중복이 많아 유지 보수 어려움
+- Redux Thunk와 같은 미들웨어를 사용해도 비동기 로직의 테스트가 복잡하고 보일러 플레이트 코드가 많이 생기기 때문에 더 효율적인 도구가 필요
+- 서버 상태는 클라이언트 상태와 달리 캐싱, 동기화, 재검증 등 관리해야 할 요소가 많아 기존 방법으로는 관리가 어려움
+- 이를 해결하기 위해 등장한 것이 TanstackQuery로 서버 상태 관리를 쉽게 해주고 복잡한 비동기 로직을 단순화
 
-Currently, two official plugins are available:
+### 주요 기능 
+- 데이터 캐싱: 동일한 데이터를 여러 번 요청하지 않도록 캐싱하여 성능을 향상시킴
+- 자동 리페칭: 데이터가 변경되었을 때 자동으로 리페칭하여 최신 상태 유지
+- 쿼리 무효화: 특정 이벤트가 발생했을 때 쿼리를 무효화하고 데이터를 다시 가져올 수 있다.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### useMutation
+- useMutation은 데이터를 생성, 수정, 삭제하는 등의 작업에 사용되는 훅
+- CUD에 대한 비동기 작업을 쉽게 수행하고, 성공 또는 실패 시에 추가적인 작업을 실행할 수 있기 때문에, useQuery와 함께 가장 대표적인 TanStack Query hook이라고 할 수 있다.
+
+### Prefetching
+- 페이지 이동 전에 이동할 페이지의 쿼리를 백그라운드에서 미리 호출 (prefetching)
+- 캐시 데이터가 있는 상태로 해당 페이지로 이동 시 로딩 없이 Ui를 바로 볼 수 있다.
+```jsx
+const prefechTodos = async() => {
+  await queryClient.prefetchQuery({
+  queryKey: ['todos'],
+  queryFn: fetchTodos,
+  })
+}
+```
